@@ -1,36 +1,24 @@
-name: Deploy Static Website
+name: Build and Deploy Website
 
 on:
   push:
-    branches: [ "main" ]  # main branch lo changes push chesina appudu run avuthundi
+    branches: [ "main" ]
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
 
-      - name: Validate HTML
-        run: |
-          echo "🔍 Checking HTML file..."
-          ls
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: ./
 
-      - name: Upload artifact (Website)
-        uses: actions/upload-artifact@v4
-        with:
-          name: website
-          path: .
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checko
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v2
